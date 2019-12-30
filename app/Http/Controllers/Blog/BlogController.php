@@ -6,9 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Model\Blog;
 use App\ValueObject\MyResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
+
+    /**
+     * @var \Illuminate\Contracts\Auth\Authenticatable|null
+     */
+    private $_user;
+
+    public function __construct()
+    {
+        $this->_user = Auth::user();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,17 +36,18 @@ class BlogController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return MyResponse
+     * @return array
      */
     public function store(Request $request)
     {
+
         // バリデーション
         // 成功メッセージとか失敗メッセージとか設定して投げれば良いんではないだろうか。
-
-        $this->withTransaction(function() use ($request) {
-            Blog::make($request)
-                ->saveOrFail();
-
+        return $this->withTransaction(function () use ($request) {
+            $store = Blog::make()->fill($request->all());
+            $store->created_by = $this->_user->getAuthIdentifier();
+            $store->updated_by = $this->_user->getAuthIdentifier();
+            $store->saveOrFail();
         });
     }
 

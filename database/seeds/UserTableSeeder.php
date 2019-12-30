@@ -1,9 +1,7 @@
 <?php
 
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class UserTableSeeder extends Seeder
 {
@@ -16,8 +14,8 @@ class UserTableSeeder extends Seeder
     {
         //
         DB::table("users")->insert([
-            "name" => Str::random(10),
-            "email" => Str::random(10).'@hoge.com',
+            "name" => 'testuser',
+            "email" => 'testuser@hoge.com',
             "password" => bcrypt('secret'),
             "remember_token" => null
         ]);

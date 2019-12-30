@@ -17,7 +17,7 @@ class Controller extends BaseController
      * @param $func
      * @param string $name
      * @param string $mes
-     * @return MyResponse
+     * @return array
      */
     protected function withTransaction($func, $name = "", $mes = "")
     {
@@ -33,16 +33,17 @@ class Controller extends BaseController
             return MyResponse::withMessage(
                 200,
                 "完了しました。"
-            );
+            )->toArray();
 
         } catch (\Exception $e) {
 
             DB::rollBack();
 
+            dd($e);
             return MyResponse::withMessage(
                 500,
-                "エラーが発生しました。"
-            );
+                "エラーが発生しました。\n {$e->getMessage()}"
+            )->toArray();
         }
 
     }

@@ -47,4 +47,12 @@ class MyResponse
         return new MyResponse($status, null, $message);
     }
 
+    public function toArray() {
+        return [
+            "status" => $this->status,
+            "content" => $this->content,
+            "message" => $this->message
+        ];
+    }
+
 }

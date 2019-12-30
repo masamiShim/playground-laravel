@@ -10,6 +10,7 @@ class Blog extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        "title",
         "body",
         "posted_at",
         "created_by",

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateBlogTable extends Migration
 {
@@ -17,7 +17,7 @@ class CreateBlogTable extends Migration
             $table->bigIncrements('id');
             $table->string('title')->comment('タイトル');
             $table->text('body')->comment('本文');
-            $table->dateTime('posted_at')->comment('投稿日時');
+            $table->dateTime('posted_at')->nullable()->comment('投稿日時');
             $table->unsignedBigInteger('created_by');
             $table->timestamp('created_at')->nullable();
             $table->unsignedBigInteger('updated_by');

@@ -21,7 +21,17 @@
                     </v-list-item-action>
                     <v-list-item-content>
                         <v-list-item-title>
-                            <router-link :to="{path: '/blog/edit/new'}">新規投稿</router-link>
+                            <router-link :to="{path: '/blog/new'}">新規投稿</router-link>
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item link @click="logout">
+                    <v-list-item-action>
+                        <v-icon>mdi-logout</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            ログアウト
                         </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
@@ -64,12 +74,15 @@
       drawer: null,
     }),
     methods: {
-      logout() {
-        axios.post('/api/logout').then(res => {
-          axios.default.headers.common[ 'Authorization' ] = '';
+      async logout() {
+        const { status, data } = await axios.post('/api/logout');
+        if (status === 200) {
+          axios.defaults.headers.common[ 'Authorization' ] = '';
           state.isLogin = false;
-          this.$router.push({ path: '/' });
-        })
+          await this.$router.push({ path: '/login' });
+        } else {
+          alert(data.message);
+        }
       }
     }
   }

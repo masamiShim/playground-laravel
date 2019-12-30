@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateCommentTable extends Migration
 {
@@ -18,8 +18,8 @@ class CreateCommentTable extends Migration
             $table->unsignedBigInteger('post_id')->comment('投稿ID');
             $table->foreign('post_id')->references('id')->on('posts');
             $table->text('body')->comment('本文');
-            $table->unsignedBigInteger('posted_by')->comment('投稿者');
-            $table->dateTime('posted_at')->comment('投稿日時');
+            $table->unsignedBigInteger('posted_by')->nullable()->comment('投稿者');
+            $table->dateTime('posted_at')->nullable()->comment('投稿日時');
             $table->unsignedBigInteger('created_by');
             $table->timestamp('created_at')->nullable();
             $table->unsignedBigInteger('updated_by');
