@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Blog;
 
 use App\Http\Controllers\Controller;
 use App\Model\Blog;
-use App\ValueObject\MyResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,12 +23,12 @@ class BlogController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return MyResponse
+     * @return array
      */
     public function index()
     {
         // とりあえず全件
-        return MyResponse::withContent(200, Blog::all()->toJson());
+        return $this->queryResult(Blog::all());
     }
 
     /**

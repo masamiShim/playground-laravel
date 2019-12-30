@@ -39,12 +39,31 @@ class Controller extends BaseController
 
             DB::rollBack();
 
-            dd($e);
             return MyResponse::withMessage(
                 500,
                 "エラーが発生しました。\n {$e->getMessage()}"
             )->toArray();
         }
 
+    }
+
+    /**
+     * @param $result
+     * @return array
+     */
+    protected function queryResult($result)
+    {
+        try {
+
+            return MyResponse::withContent(
+                200,
+                $result
+            )->toArray();
+        } catch (\Exception $e) {
+            return MyResponse::withMessage(
+                500,
+                "エラーが発生しました。\n {$e->getMessage()}"
+            )->toArray();
+        }
     }
 }

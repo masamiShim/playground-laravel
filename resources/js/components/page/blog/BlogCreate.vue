@@ -38,6 +38,9 @@
     methods: {
       async create() {
         const { data } = await axios.post(BLOG, { title: this.form.title, body: this.form.body });
+        if(data.status === 200) {
+          this.$router.push({path: '/home'});
+        }
       }
     }
   }

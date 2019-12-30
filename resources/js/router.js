@@ -9,7 +9,8 @@ import BlogIndex from "./components/page/blog/BlogIndex";
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '/', component: Home },
+    { path: '/', component: Home, requiredAuth: true},
+    { path: '/home', component: Home, requiredAuth: true},
     { path: '/login', component: Login },
     { path: '/blog', component: BlogIndex, requiredAuth: true },
     { path: '/blog/new', name: 'blog.create', component: BlogCreate, requiredAuth: true }
