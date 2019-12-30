@@ -9,13 +9,13 @@ require('./bootstrap');
 
 // Vue
 import Vue from 'vue'
-
-//Vuetify
-
 import Vuetify from "vuetify";
 import colors from "vuetify/es5/util/colors"
 import 'vuetify/dist/vuetify.min.css'
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import router from './router'
+import store from './store'
+
+//Vuetify
 
 Vue.use(Vuetify, {
    theme: {
@@ -24,9 +24,6 @@ Vue.use(Vuetify, {
        accent: colors.amber.base,
    }
 });
-
-import router from './router'
-import store from './store'
 
 
 window.axios = require('axios');
@@ -53,4 +50,5 @@ Vue.component('app', require('./components/App.vue').default);
 
 const app = new Vue({
     router,
+    vuetify: new Vuetify({}),
 }).$mount('#app');

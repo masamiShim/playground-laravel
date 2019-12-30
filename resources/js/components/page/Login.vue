@@ -1,21 +1,45 @@
 <template>
-    <div>
-        <p v-show="isError">認証に失敗しました。</p>
-        <form @submit.prevent="login">
-            <h1>ログイン</h1>
-            <div>
-                <label>メールアドレス：</label> <input type="email" v-model="email"/>
-            </div>
-            <div>
-                <label>パスワード：</label><input type="password" v-model="password"/>
-            </div>
-            <ul>
-                <li>
-                    <button type="submit">ログイン</button>
-                </li>
-            </ul>
-        </form>
-    </div>
+    <v-layout>
+        <v-flex class="pa-5" xs8>
+            <v-card class="pa-3" xs8>
+                <v-card-title>ログイン</v-card-title>
+                <v-card-text>
+                    <v-form @submit.prevent="login">
+                        <v-flex v-show="isError">認証に失敗しました。</v-flex>
+                        <v-flex>
+                            <v-text-field
+                                type="email"
+                                label="メールアドレス"
+                                placeholder="hogehoge@mail.com"
+                                prepend-icon="email"
+                                v-model="email"
+                            >
+                            </v-text-field>
+                        </v-flex>
+                        <v-flex>
+                            <v-text-field
+                                type="password"
+                                label="パスワード"
+                                placeholder="hogehoge@mail.com"
+                                prepend-icon="lock"
+                                v-model="password"
+                            ></v-text-field>
+                        </v-flex>
+                        <v-layout wrap>
+                            <v-spacer></v-spacer>
+                            <v-flex>
+                                <v-spacer></v-spacer>
+                                <v-flex>
+                                    <v-btn type="submit" class="primary">ログイン</v-btn>
+                                </v-flex>
+                            </v-flex>
+                        </v-layout>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-flex>
+    </v-layout>
+
 </template>
 
 <script>
@@ -29,19 +53,19 @@
       }
     },
     methods: {
-        login() {
-          axios.post('/api/login', {
-            email: this.email,
-            password: this.password
-          }).then(res => {
-            const token = res.data.access_token;
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            state.isLogin = true;
-            this.$router.push({path: '/'})
-          }).catch(err => {
-            this.isError = true;
-          });
-        }
+      login() {
+        axios.post('/api/login', {
+          email: this.email,
+          password: this.password
+        }).then(res => {
+          const token = res.data.access_token;
+          axios.defaults.headers.common[ 'Authorization' ] = `Bearer ${token}`;
+          state.isLogin = true;
+          this.$router.push({ path: '/' })
+        }).catch(err => {
+          this.isError = true;
+        });
+      }
     }
   }
 </script>
