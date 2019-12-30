@@ -1,0 +1,17 @@
+version: '3.3'
+services:
+  db:
+    build: ./mysql
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: blog_db
+      MYSQL_USER: blog
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "33060:3306"
+    volumes:
+      - ./mysql/initdb.d:/docker-entriypoint-initdb.d
+      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./log/mysql:/var/log/mysql
