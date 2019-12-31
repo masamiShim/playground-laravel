@@ -53,8 +53,18 @@
         password: '',
       }
     },
+    created() {
+      console.log(this.$route.query.reason);
+      const reason = this.$route.query.reason || null;
+      if (reason) {
+        this.$toasted.clear();
+        this.$toasted.error("トークンの有効期限が切れたため再度ログインしてください。")
+        setTimeout(()=>{
+          this.$toasted.clear()
+        }, 2500)
+      }
+    },
     methods: {
-
       login() {
 
         this.isError = false;
@@ -64,8 +74,11 @@
           email: this.email,
           password: this.password
         }).then(() => {
-          this.$store.dispatch('fetchAuth').then(() =>
-            this.$router.push({ path: '/home' })
+          this.$store.dispatch('fetchAuth').then(() => {
+              this.$nextTick(() => {
+                this.$router.push({ path: '/home' })
+              })
+            }
           );
         }).catch((err) => {
           this.isError = true;

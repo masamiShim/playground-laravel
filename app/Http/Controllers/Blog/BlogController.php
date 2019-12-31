@@ -32,6 +32,15 @@ class BlogController extends Controller
     }
 
     /**
+     * 自分のブログを取得する。
+     * @return array
+     */
+    public function myBlog()
+    {
+        return $this->queryResult(Blog::where("created_by", $this->_user->getAuthIdentifier())->get());
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -59,7 +68,7 @@ class BlogController extends Controller
     public function show($id)
     {
         //とりあえずある前提
-       return $this->queryResult(
+        return $this->queryResult(
             Blog::select(["title", "body"])
                 ->where("id", $id)
                 ->first()

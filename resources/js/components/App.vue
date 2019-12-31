@@ -6,33 +6,33 @@
             app
         >
             <v-list dense>
-                <v-list-item link>
+                <v-list-item link @click.prevent.stop="$router.push({path: '/home'})">
                     <v-list-item-action>
                         <v-icon>mdi-home</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
                         <v-list-item-title>
-                            <router-link :to="{path: '/home'}">Home</router-link>
+                            <router-link to="#">Home</router-link>
                         </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item link>
+                <v-list-item link @click.prevent.stop="$router.push({path: '/blog'})">
                     <v-list-item-action>
                         <v-icon>search</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
                         <v-list-item-title>
-                            <router-link :to="{path: '/blog'}">ブログ検索</router-link>
+                            <router-link to="#">ブログ検索</router-link>
                         </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item link>
+                <v-list-item link @click.prevent.stop="$router.push({path: '/blog/new'})">
                     <v-list-item-action>
                         <v-icon>mdi-pencil</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
                         <v-list-item-title>
-                            <router-link :to="{path: '/blog/new'}">新規投稿</router-link>
+                            <router-link to="#">新規投稿</router-link>
                         </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>

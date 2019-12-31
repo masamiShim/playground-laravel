@@ -8,6 +8,7 @@
             show-select
             class="elevation-2"
         >
+            <!-- TODO 良いねとかコメント数とか見れると良いよね。-->
             <template v-slot:top>
                 <v-flex>
                     <v-toolbar xs2 color="indigo" class="white--text">
@@ -56,7 +57,7 @@
 </template>
 
 <script>
-  import { BLOG } from "../../../api/endpoint";
+  import { MY_BLOG } from "../../../api/endpoint";
   import { mapGetters } from "vuex";
 
   export default {
@@ -82,7 +83,7 @@
     async created() {
 
       $http.defaults.headers.common['Authorization'] = `bearer ${this.token}`
-      const { data } = await $http.get(BLOG, {});
+      const { data } = await $http.get(MY_BLOG, {});
       this.items = data.content;
     },
     methods: {

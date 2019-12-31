@@ -26,4 +26,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('/blog', 'Blog\BlogController');
     Route::apiResource('/post', 'Blog\PostController');
     Route::apiResource('/comment', 'Blog\CommentController');
+    Route::get('/my/blog', 'Blog\BlogController@myBlog');
 });
