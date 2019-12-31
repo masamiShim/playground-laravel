@@ -13,7 +13,12 @@ import Vuetify from "vuetify";
 import colors from "vuetify/es5/util/colors"
 import 'vuetify/dist/vuetify.min.css'
 import router from './router'
-import store from './store'
+import { store } from './store/index'
+import DatetimePicker from 'vuetify-datetime-picker'
+import Toasted from 'vue-toasted'
+import dayjs from "dayjs";
+import 'dayjs/locale/ja';
+import http from "./api/CustomAxios";
 
 //Vuetify
 
@@ -25,10 +30,21 @@ Vue.use(Vuetify, {
    }
 });
 
+var toast_options = {
+    position: 'top-center',
+    duration: 2000,
+    fullWidth: true,
+    fitToScreen: true,
+}
+Vue.use(DatetimePicker);
+Vue.use(Toasted, toast_options);
 
-window.axios = require('axios');
-window.state = store.state;
+window.$http = http;
+window.axios = axios;
+Vue.prototype.$cookies = require('js-cookie');
 
+dayjs.locale('ja');
+Vue.prototype.$dj = dayjs;
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -50,5 +66,6 @@ Vue.component('app', require('./components/App.vue').default);
 
 const app = new Vue({
     router,
+    store,
     vuetify: new Vuetify({}),
 }).$mount('#app');

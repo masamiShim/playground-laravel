@@ -3,10 +3,23 @@
 namespace App\Http\Controllers\Blog;
 
 use App\Http\Controllers\Controller;
+use App\Model\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+
+    /**
+     * @var \Illuminate\Contracts\Auth\Authenticatable|null
+     */
+    private $_user;
+
+    public function __construct()
+    {
+        $this->_user = Auth::user();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,11 +34,20 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return array
      */
     public function store(Request $request)
     {
-        //
+
+        // バリデーション
+        // 成功メッセージとか失敗メッセージとか設定して投げれば良いんではないだろうか。
+        return $this->withTransaction(function () use ($request) {
+            $store = Post::make()->fill($request->all());
+            $store->created_by = $this->_user->getAuthIdentifier();
+            $store->updated_by = $this->_user->getAuthIdentifier();
+            $store->saveOrFail();
+        });
+
     }
 
     /**

@@ -15,9 +15,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login', 'AuthController@login');
-Route::post('/logout', 'AuthController@logout');
 
 Route::group(['middleware' => 'auth:api'], function () {
+    // 認証関連
     Route::get('/me', 'AuthController@me');
+    Route::post('/logout', 'AuthController@logout');
+    Route::post('/refresh', 'AuthController@refresh');
+
+    // Blog
     Route::apiResource('/blog', 'Blog\BlogController');
+    Route::apiResource('/post', 'Blog\PostController');
+    Route::apiResource('/comment', 'Blog\CommentController');
 });

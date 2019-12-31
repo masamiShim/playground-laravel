@@ -1,5 +1,21 @@
 <template>
     <v-flex>
+        <v-card class="elevation-1">
+            <v-toolbar color="indigo" class="white--text">
+                検索条件
+            </v-toolbar>
+            <v-card-text>
+                <v-layout wrap justify-start>
+                    <v-flex xs5 mr-5>
+                        <v-text-field label="投稿者" v-model="form.blog_user"></v-text-field>
+                    </v-flex>
+                    <v-flex xs5>
+                        <v-text-field label="タイトル" v-model="form.blog_title"></v-text-field>
+                    </v-flex>
+                </v-layout>
+            </v-card-text>
+        </v-card>
+        <v-divider/>
         <v-data-table
             v-model="selected"
             :headers="headers"
@@ -11,7 +27,7 @@
             <template v-slot:top>
                 <v-flex>
                     <v-toolbar xs2 color="indigo" class="white--text">
-                        マイブログ
+                        ブログ検索
                         <v-flex xs2>
                             <v-text-field></v-text-field>
                         </v-flex>
@@ -63,17 +79,22 @@
   import { mapGetters } from "vuex";
 
   export default {
-    name: "BlogIndex",
+    name: "BlogSearch",
     data() {
       return {
+        form: {
+          blog_title: '',
+          blog_user: "",
+        },
         selected: [],
         items: [],
         headers: [
           { text: '#', value: 'id' },
           { text: 'タイトル', value: 'title' },
           { text: '内容', value: 'body' },
+          { text: '投稿者', value: 'created_by' },
           { text: '作成日時', value: 'created_at' },
-          { text: '', value: 'action', sortable: false}
+          { text: '', value: 'action', sortable: false }
         ]
       }
     },
@@ -84,13 +105,13 @@
     },
     async created() {
 
-      $http.defaults.headers.common['Authorization'] = `bearer ${this.token}`
+      $http.defaults.headers.common[ 'Authorization' ] = `bearer ${this.token}`
       const { data } = await $http.get(BLOG, {});
       this.items = data.content;
     },
     methods: {
       post(item) {
-        this.$router.push({name: 'post.create', params: {blog_id: item.id}})
+        this.$router.push({ name: 'post.create', params: { blog_id: item.id } })
       }
     }
   }

@@ -12,6 +12,7 @@ class Post extends Model
     protected $fillable = [
         "blog_id",
         "body",
+        "posted_at",
         "created_by",
         "updated_by",
         "deleted_at",

@@ -1,8 +1,8 @@
 <template>
-    <v-layout>
+    <v-layout justify-center align-center>
         <v-flex class="pa-5" xs8>
-            <v-card class="pa-3" xs8>
-                <v-card-title>ログイン</v-card-title>
+            <v-card xs8>
+                <v-toolbar color="indigo" class="white--text">ログイン</v-toolbar>
                 <v-card-text>
                     <v-form @submit.prevent="login">
                         <v-flex v-show="isError">認証に失敗しました。</v-flex>
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+
   export default {
     name: "Login",
     data() {
@@ -53,16 +54,20 @@
       }
     },
     methods: {
+
       login() {
-        axios.post('/api/login', {
+
+        this.isError = false;
+
+        // ログイン処理
+        this.$store.dispatch('authorize', {
           email: this.email,
           password: this.password
-        }).then(res => {
-          const token = res.data.access_token;
-          axios.defaults.headers.common[ 'Authorization' ] = `Bearer ${token}`;
-          state.isLogin = true;
-          this.$router.push({ path: '/' })
-        }).catch(err => {
+        }).then(() => {
+          this.$store.dispatch('fetchAuth').then(() =>
+            this.$router.push({ path: '/home' })
+          );
+        }).catch((err) => {
           this.isError = true;
         });
       }

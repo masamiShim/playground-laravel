@@ -17,6 +17,7 @@
 
 <script>
   import { BLOG } from "../../api/endpoint";
+  import { mapGetters } from "vuex";
 
   export default {
     name: "Home",
@@ -32,7 +33,14 @@
         ]
       }
     },
+    computed: {
+      ...mapGetters({
+        token: 'token'
+      })
+    },
     async created() {
+
+      axios.defaults.headers.common['Authorization'] = `bearer ${this.token}`
       const { data } = await axios.get(BLOG, {});
       this.items = data.content;
     }

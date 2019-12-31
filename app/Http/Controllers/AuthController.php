@@ -27,10 +27,24 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
-        return response()->json(['message' => 'ログアウトしました。']);
+        try {
+            auth()->logout();
+            return response()->json(['message' => 'ログアウトしました。']);
+        } catch (\Exception $e) {
+            return response()->json(['ログアウトに失敗しました'], 500);
+        }
     }
 
+    public function refresh()
+    {
+        return $this->respondWithToken(auth()->refresh());
+    }
+
+    /**
+     * 認証済みユーザの情報を返す。
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function me()
     {
         return response()->json(auth()->user());

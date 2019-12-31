@@ -23,6 +23,7 @@
 
 <script>
   import { BLOG } from "../../../api/endpoint";
+  import { mapGetters } from "vuex";
 
   export default {
     name: "BlogCreate",
@@ -34,12 +35,17 @@
         }
       }
     },
-
+    computed: {
+      ...mapGetters({
+        token: 'token'
+      })
+    },
     methods: {
       async create() {
-        const { data } = await axios.post(BLOG, { title: this.form.title, body: this.form.body });
+        // 登録
+        const { data } = await $http.post(BLOG, { title: this.form.title, body: this.form.body });
         if(data.status === 200) {
-          this.$router.push({path: '/home'});
+          await this.$router.push({path: '/home'});
         }
       }
     }

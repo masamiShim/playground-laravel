@@ -1,6 +1,7 @@
 <template>
     <v-app id="inspire">
         <v-navigation-drawer
+            v-show="isLogin"
             v-model="drawer"
             app
         >
@@ -17,6 +18,16 @@
                 </v-list-item>
                 <v-list-item link>
                     <v-list-item-action>
+                        <v-icon>search</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            <router-link :to="{path: '/blog'}">ブログ検索</router-link>
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item link>
+                    <v-list-item-action>
                         <v-icon>mdi-pencil</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
@@ -25,13 +36,13 @@
                         </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item link @click="logout">
+                <v-list-item link @click.prevent.stop="logout">
                     <v-list-item-action>
                         <v-icon>mdi-logout</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
                         <v-list-item-title>
-                            ログアウト
+                            <router-link :to="{path: '/blog/new'}">ログアウト</router-link>
                         </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
@@ -43,7 +54,7 @@
             color="indigo"
             dark
         >
-            <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
+            <v-app-bar-nav-icon v-show="isLogin" @click.stop="drawer = !drawer"/>
             <v-toolbar-title>Blog</v-toolbar-title>
         </v-app-bar>
 
@@ -52,7 +63,9 @@
                 class="fill-height"
                 fluid
             >
-                <router-view></router-view>
+                <transition mode="out-in">
+                    <router-view></router-view>
+                </transition>
             </v-container>
         </v-content>
         <v-footer
@@ -65,29 +78,38 @@
 </template>
 
 <script>
+  import { mapGetters } from "vuex";
+
   export default {
     name: "App",
     props: {
       source: String,
     },
     data: () => ({
-      drawer: null,
+      drawer: false,
     }),
+    computed: {
+      ...mapGetters({
+        isLogin: 'isLogin'
+      })
+    },
     methods: {
-      async logout() {
-        const { status, data } = await axios.post('/api/logout');
-        if (status === 200) {
-          axios.defaults.headers.common[ 'Authorization' ] = '';
-          state.isLogin = false;
-          await this.$router.push({ path: '/login' });
-        } else {
-          alert(data.message);
-        }
+      logout() {
+        // ログアウト処理
+        this.$store.dispatch('destroyAuth').then(() => {
+          this.drawer = false
+          this.$router.push({ path: '/login' });
+        })
       }
     }
   }
 </script>
 
 <style scoped>
-
+    .v-enter-active, .v-leave-active {
+        transition: opacity .5s;
+    }
+    .v-enter, .v-leave-to {
+        opacity: 0;
+    }
 </style>

@@ -58,7 +58,12 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        //
+        //とりあえずある前提
+       return $this->queryResult(
+            Blog::select(["title", "body"])
+                ->where("id", $id)
+                ->first()
+        );
     }
 
     /**
