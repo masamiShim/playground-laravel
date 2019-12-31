@@ -7,6 +7,7 @@ import BlogIndex from "./components/page/blog/BlogIndex";
 import BlogSearch from "./components/page/blog/BlogSearch";
 import PostCreate from "./components/page/blog/PostCreate";
 import Cookies from 'js-cookie'
+import { store } from './store/index'
 
 Vue.use(VueRouter);
 
@@ -30,6 +31,8 @@ router.beforeEach(async (to, from, next) => {
     if (to.matched.some(record => record.meta.requiredAuth)) {
         const val = Cookies.get('vuex') ? JSON.parse(Cookies.get('vuex')).isLogin : false;
         if (!val) {
+            //クッキー無くなった時も考慮
+            await store.commit('destroyAuth');
             await next({
                 path: W_LOGIN,
                 query: { redirect: to.fullPath, reason: 'expired' },

@@ -6,7 +6,7 @@
             app
         >
             <v-list dense>
-                <v-list-item link @click.prevent.stop="$router.push({path: '/home'})">
+                <v-list-item link @click.prevent="$router.push({path: '/home'})">
                     <v-list-item-action>
                         <v-icon>mdi-home</v-icon>
                     </v-list-item-action>

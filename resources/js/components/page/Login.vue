@@ -54,12 +54,11 @@
       }
     },
     created() {
-      console.log(this.$route.query.reason);
       const reason = this.$route.query.reason || null;
       if (reason) {
         this.$toasted.clear();
         this.$toasted.error("トークンの有効期限が切れたため再度ログインしてください。")
-        setTimeout(()=>{
+        setTimeout(() => {
           this.$toasted.clear()
         }, 2500)
       }
@@ -84,7 +83,14 @@
           this.isError = true;
         });
       }
-    }
+    },
+    beforeRouteUpdate(enter, leave, next) {
+      const reason = leave.query.reason || null;
+      if (reason) {
+        this.$router.push({path: '/login'})
+      }
+      next(enter);
+    },
   }
 </script>
 
