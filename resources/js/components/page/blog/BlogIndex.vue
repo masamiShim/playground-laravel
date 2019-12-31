@@ -12,9 +12,6 @@
                 <v-flex>
                     <v-toolbar xs2 color="indigo" class="white--text">
                         マイブログ
-                        <v-flex xs2>
-                            <v-text-field></v-text-field>
-                        </v-flex>
                     </v-toolbar>
                 </v-flex>
             </template>
