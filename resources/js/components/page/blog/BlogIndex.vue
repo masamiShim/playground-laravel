@@ -82,7 +82,6 @@
     },
     async created() {
 
-      $http.defaults.headers.common['Authorization'] = `bearer ${this.token}`
       const { data } = await $http.get(MY_BLOG, {});
       this.items = data.content;
     },

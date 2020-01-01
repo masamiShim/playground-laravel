@@ -4,20 +4,16 @@ namespace App\Http\Controllers\Blog;
 
 use App\Http\Controllers\Controller;
 use App\Model\Blog;
+use App\Model\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {
 
-    /**
-     * @var \Illuminate\Contracts\Auth\Authenticatable|null
-     */
-    private $_user;
-
     public function __construct()
     {
-        $this->_user = Auth::user();
+        parent::__construct();
     }
 
     /**
@@ -28,7 +24,23 @@ class BlogController extends Controller
     public function index()
     {
         // とりあえず全件
-        return $this->queryResult(Blog::all());
+        return $this->queryResult(
+            Blog::select([
+                "blogs.id",
+                "blogs.title",
+                "blogs.body",
+                "blogs.created_by",
+                "blogs.created_at",
+                DB::raw("IFNULL(blog_favorites.is_favorite, 0) as is_favorite"),
+                DB::raw("IFNULL(blog_likes.is_like, 0) as is_like")
+            ])->leftJoin("blog_favorites", function ($join) {
+                $join->on("blog_favorites.blog_id", "blogs.id");
+                $join->where("blog_favorites.user_id", "=", $this->_user->getAuthIdentifier());
+            })->leftJoin("blog_likes", function ($join) {
+                $join->on("blog_likes.blog_id", "blogs.id");
+                $join->where("blog_likes.user_id", "=", $this->_user->getAuthIdentifier());
+            })->where("created_by", "<>", $this->_user->getAuthIdentifier())->get()
+        );
     }
 
     /**
@@ -38,6 +50,19 @@ class BlogController extends Controller
     public function myBlog()
     {
         return $this->queryResult(Blog::where("created_by", $this->_user->getAuthIdentifier())->get());
+    }
+
+    /**
+     * ブログの詳細を取得(投稿含めてとってくるr)
+     * @param $id
+     * @return array
+     */
+    public function showDetail($id)
+    {
+        return $this->queryResult([
+            "blog" => Blog::find($id),
+            "posts" => Post::where("blog_id", $id)->get()
+        ]);
     }
 
     /**

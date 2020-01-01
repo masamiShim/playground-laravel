@@ -5,20 +5,15 @@ namespace App\Http\Controllers\Blog;
 use App\Http\Controllers\Controller;
 use App\Model\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
 
-    /**
-     * @var \Illuminate\Contracts\Auth\Authenticatable|null
-     */
-    private $_user;
-
     public function __construct()
     {
-        $this->_user = Auth::user();
+        parent::__construct();
     }
+
 
     /**
      * Display a listing of the resource.

@@ -1,10 +1,29 @@
 import Vue from 'vue'
 import Axios from 'axios'
+import Cookies from "js-cookie";
 
 const http = Axios.create({
     //withCredentials: true
 })
 
+/**
+ * jwtのトークンセットするのをデフォ化する。(一応あれば設定して、なければ401が返ってくるでしょ。)
+ */
+http.interceptors.request.use(request => {
+    const token = Cookies.get('vuex') ? JSON.parse(Cookies.get('vuex')).token : null;
+    console.log('in intercepter requested');
+    console.log(token);
+    if (token) {
+        console.log('in intercepter set token');
+        console.log(http);
+        http.defaults.headers.common[ 'Authorization' ] = `bearer ${token}`
+    }
+    return request
+})
+
+/**
+ * responseでtoast出すかどうかを共通化
+ */
 http.interceptors.response.use((response) => {
     if (response.data.message) {
         showSuccessToast(response.data.message)

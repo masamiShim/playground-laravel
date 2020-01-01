@@ -8,17 +8,18 @@ import BlogSearch from "./components/page/blog/BlogSearch";
 import PostCreate from "./components/page/blog/PostCreate";
 import Cookies from 'js-cookie'
 import { store } from './store/index'
+import BlogShow from "./components/page/blog/BlogShow";
 
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '*', component: BlogIndex, meta: { requiredAuth: true } },
     { path: '/home', component: BlogIndex, meta: { requiredAuth: true } },
     { path: '/login', component: Login },
     { path: '/blog', name: 'blog.search', component: BlogSearch, meta: { requiredAuth: true } },
     { path: '/blog/new', name: 'blog.create', component: BlogCreate, meta: { requiredAuth: true } },
     { path: '/post/new', name: 'post.create', component: PostCreate, meta: { requiredAuth: true } },
-
+    { path: '/blog/show/:id', name: 'blog.show', component: BlogShow, meta: { requiredAuth: true } },
+    { path: '*', component: BlogIndex, meta: { requiredAuth: true } },
 ];
 
 const router = new VueRouter({

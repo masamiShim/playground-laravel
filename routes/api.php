@@ -15,16 +15,27 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login', 'AuthController@login');
+Route::post('/logout', 'AuthController@logout');
 
 Route::group(['middleware' => 'auth:api'], function () {
     // 認証関連
     Route::get('/me', 'AuthController@me');
-    Route::post('/logout', 'AuthController@logout');
     Route::post('/refresh', 'AuthController@refresh');
 
     // Blog
+    // blog
     Route::apiResource('/blog', 'Blog\BlogController');
+    Route::apiResource('/like/blog', 'Blog\BlogLikeController');
+    Route::apiResource('/favorite/blog', 'Blog\BlogFavoriteController');
+    // post
     Route::apiResource('/post', 'Blog\PostController');
+    Route::apiResource('/like/post', 'Blog\BlogLikeController');
+    Route::apiResource('/favorite/post', 'Blog\BlogFavoriteController');
+    // comment
     Route::apiResource('/comment', 'Blog\CommentController');
+
+    // other
     Route::get('/my/blog', 'Blog\BlogController@myBlog');
+    Route::get('/detail/blog/{id}', 'Blog\BlogController@showDetail');
+
 });

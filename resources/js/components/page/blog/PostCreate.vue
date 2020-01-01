@@ -22,6 +22,7 @@
                         <v-textarea
                             label="本文"
                             v-model="form.body"
+                            outlined
                         ></v-textarea>
                     </v-flex>
                     <v-flex>
